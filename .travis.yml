@@ -24,10 +24,10 @@ after_success:
   ## this docker user and pass variables are env vars in travis ci
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # push the images to my dockerhub
-  -docker push maxipaolucci/fibonacci-client
-  -docker push maxipaolucci/fibonacci-nginx
-  -docker push maxipaolucci/fibonacci-server
-  -docker push maxipaolucci/fibonacci-worker
+  - docker push maxipaolucci/fibonacci-client
+  - docker push maxipaolucci/fibonacci-nginx
+  - docker push maxipaolucci/fibonacci-server
+  - docker push maxipaolucci/fibonacci-worker
 
 # deploy:
 #     # travis has integracions with AWS, providing the service name is enough to travis to find it
