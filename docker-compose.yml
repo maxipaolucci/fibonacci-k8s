@@ -1,6 +1,10 @@
 version: '3'
 services:
   # when using compose, the services names can be use as domain urls (e.g.: postgres:5432, redis:6379, server:5000, client:3000)
+  postgres:
+    image: 'postgres:latest'
+  redis:
+    image: 'redis:latest'
   nginx:
     restart: always
     build:
@@ -8,10 +12,6 @@ services:
       context: ./nginx
     ports:
       - '3050:80'
-  postgres:
-    image: 'postgres:latest'
-  redis:
-    image: 'redis:latest'
   api:
     build:
       dockerfile: Dockerfile.dev

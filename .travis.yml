@@ -23,29 +23,29 @@ after_success:
   # Log in to the docker CLI 
   ## this docker user and pass variables are env vars in travis ci
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # push the images to my dockerhub
+  # push the images to Dockerhub
   - docker push maxipaolucci/fibonacci-client
   - docker push maxipaolucci/fibonacci-nginx
   - docker push maxipaolucci/fibonacci-server
   - docker push maxipaolucci/fibonacci-worker
 
-# deploy:
-#     # travis has integracions with AWS, providing the service name is enough to travis to find it
-#     provider: elasticbeanstalk
-#     # the region can be found in the app url created by AWS when we created the app:  DockerReact-env.s23cypvida.us-east-2.elasticbeanstalk.com
-#     region: "us-east-2"
-#     app: "docker-react"
-#     env: "DockerReact-env"
-#     # the bucket is basically a hardrive (S3 bucket) in AWS where travis is going to copy the deploy package zipfile
-#     # this bucket is going to be reuse for all the env that we will create.
-#     # look in "Service > S3 Scalable storage in the cloud"
-#     bucket_name: "elasticbeanstalk-us-east-2-782522910439"
-#     # by default the same as app name
-#     bucket_path: "docker-react"
-#     on:
-#       #deploy just when we push on master 
-#       branch: master
-#     # these keys we stored as env vars in travis, and generated in aws services > IAM, check lesson "91 Automated deployments"
-#     access_key_id: $AWS_ACCESS_KEY
-#     secret_access_key:
-#       secure: "$AWS_SECRET_KEY"
+deploy:
+    # travis has integracions with AWS, providing the service name is enough to travis to find it
+    provider: elasticbeanstalk
+    # the region can be found in the app url created by AWS when we created the app:  DockerReact-env.s23cypvida.us-east-2.elasticbeanstalk.com
+    region: "us-east-2"
+    app: "fibonacci"
+    env: "Fibonacci-env"
+    # the bucket is basically a hardrive (S3 bucket) in AWS where travis is going to copy the deploy package zipfile
+    # this bucket is going to be reuse for all the env that we will create.
+    # look in "Service > S3 Scalable storage in the cloud"
+    bucket_name: "elasticbeanstalk-us-east-2-782522910439"
+    # by default the same as app name
+    bucket_path: "fibonacci"
+    on:
+      #deploy just when we push on master 
+      branch: master
+    # these keys we stored as env vars in travis, and generated in aws services > IAM, check lesson "91 Automated deployments"
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key:
+      secure: "$AWS_SECRET_KEY"
