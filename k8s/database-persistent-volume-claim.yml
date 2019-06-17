@@ -1,0 +1,14 @@
+# For explanation about PVC (Persistant volume claim) take a look to lesson 200 and 201. 
+# It is basically a billboard where we advertise the different option of product we gonna offer our interested pods
+# See also explanations in lessons 198 and 199
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-persistent-volume-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi # this is a lot, for this app we just need some kb

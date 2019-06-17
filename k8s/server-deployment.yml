@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server # both "component" and "server" could be whatever we want
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: maxipaolucci/fibonacci-server
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service
+            - name: REDIS_PORT
+              value: '6379' # as string to not see an error saying cannot convert int64 to string
+            - name: PGUSER
+              value: postgres
+            - name: PGHOST
+              value: postgres-cluster-ip-service
+            - name: PGPORT
+              value: '5432' # as string to not see an error saying cannot convert int64 to string
+            - name: PGDATABASE
+              value: postgres # default db of postgres
+            - name: PGPASSWORD # this is the name our node server is going to looking for
+              valueFrom: # we manage sensitive data using kubernetes secrets. See lesson 208 on how to create secrets
+                         # we will need to create this secret on each environment where we plan to deploy our k8s app
+                secretKeyRef:
+                  name: pgpassword # this is the name we give to out secret when created inside our 
+                                  # local kubernetes with >kubectl create secret ... command
+                  key: PGPASSWORD # A secret could store multiple key=values sets, so this is the 
+                                  # name we give to the postgress password value in our pgpasswrod secret

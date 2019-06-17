@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: postgres
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage #this must be identical to the volume name defined above
+              mountPath: /var/lib/postgresql/data #this is the default place where postgres stores data
+                                                  # inside the container
+              subPath: postgres # this is a folder where the data will be stored inside the actual PVC
+                                # so in the container the data path will be mountPath + subPath 
+                                # in the PVC just postgress. This is something neccessary for postgress
+                                # because by default does not like to set a volume in it default /var/lib/postgresql/data
+                                # but if we place inside it in a folder is totally ok
+          env:
+            - name: POSTGRES_PASSWORD # if the container sees a POSTGRES_PASSWORD env var it is going to use it as the 
+                               # contianer password instead of the default postgress password
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword # this is the name we give to out secret when created inside our 
+                                  # local kubernetes with >kubectl create secret ... command
+                  key: PGPASSWORD # A secret could store multiple key=values sets, so this is the 
+                                      # name we give to the postgress password value in our pgpasswrod secret
