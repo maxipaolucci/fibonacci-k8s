@@ -11,7 +11,7 @@ before_install:
   # install google cloud sdk
   - curl https://sdk.cloud.google.com | bash > /dev/null;
   # apply initial config from google cloud default installation dir to the bash with source
-  - source $HOME/google-clud-sdk/path.bash.inc
+  - source $HOME/google-cloud-sdk/path.bash.inc
   # install kubectl command
   - gcloud components update kubectl
   # Lesson 235. this is like AWS IAM service to connect and deploy (we put the credentials to access our cloud in the service-account.json)
