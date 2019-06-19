@@ -34,7 +34,8 @@ spec:
             - name: POSTGRES_PASSWORD # if the container sees a POSTGRES_PASSWORD env var it is going to use it as the 
                                # contianer password instead of the default postgress password
               valueFrom:
-                secretKeyRef:
+                secretKeyRef: 
+                  #see lesson 245 on how to create this secret in google cloud when we deploy this there
                   name: pgpassword # this is the name we give to out secret when created inside our 
                                   # local kubernetes with >kubectl create secret ... command
                   key: PGPASSWORD # A secret could store multiple key=values sets, so this is the 
